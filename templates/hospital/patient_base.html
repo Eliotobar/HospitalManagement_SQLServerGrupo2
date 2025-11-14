@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HMS - Panel de Paciente</title>
+
+  <!-- Bootstrap y FontAwesome -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- jQuery, Popper y Bootstrap JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <style>
+    /* ----------- Estilos generales ----------- */
+    body {
+      padding-left: 240px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #e6e6e6;
+    }
+
+    /* ----------- Sidebar ----------- */
+    .menu {
+      background: #5bc995;
+      height: 100vh;
+      width: 240px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 5;
+      overflow-y: auto;
+      transition: 0.3s;
+    }
+
+    .menu .avatar {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.1);
+      padding: 2em 0.5em;
+    }
+
+    .menu .avatar img {
+      width: 100px;
+      border-radius: 50%;
+      border: 4px solid #ffea92;
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.2);
+    }
+
+    .menu .avatar h2 {
+      margin-top: 10px;
+      color: white;
+      font-size: 1.2em;
+    }
+
+    .menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu ul li {
+      padding: 0.7em 1em 0.7em 3em;
+      font-size: 1em;
+      background-repeat: no-repeat;
+      background-position: left 15px center;
+      background-size: 20px auto;
+      transition: all 0.2s linear;
+    }
+
+    .menu ul li:hover {
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+
+    /* Iconos del menú */
+    .icon-dashboard {
+      background-image: url("https://cdn-icons-png.flaticon.com/512/1828/1828673.png");
+    }
+
+    .icon-calendar {
+      background-image: url("https://cdn-icons-png.flaticon.com/512/747/747310.png");
+    }
+
+    .icon-users {
+      background-image: url("https://cdn-icons-png.flaticon.com/512/1250/1250689.png");
+    }
+
+    /* ----------- Navbar superior ----------- */
+    .navbar {
+      background-color: #337AB7 !important;
+    }
+
+    /* ----------- Footer ----------- */
+    footer {
+      background: black;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* ----------- Responsividad ----------- */
+    @media screen and (max-width: 900px) {
+      body {
+        padding-left: 90px;
+      }
+
+      .menu {
+        width: 90px;
+      }
+
+      .menu .avatar img {
+        width: 60px;
+      }
+
+      .menu .avatar h2 {
+        display: none;
+      }
+
+      .menu ul li {
+        background-position: center center;
+        background-size: 25px auto;
+        text-align: center;
+        padding-left: 0;
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      body {
+        padding-left: 0;
+      }
+
+      .menu {
+        position: fixed;
+        transform: translateX(-240px);
+      }
+
+      .menu.active {
+        transform: translateX(0);
+      }
+
+      .menu-toggle {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        background: #5bc995;
+        border: none;
+        padding: 10px;
+        color: white;
+        border-radius: 4px;
+        z-index: 999;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Botón para abrir/cerrar menú en móvil -->
+  <button class="menu-toggle d-block d-md-none"><i class="fa fa-bars"></i></button>
+
+  <!-- Menú lateral -->
+  <nav class="menu" id="sidebar">
+    <header class="avatar">
+      <img src="{{ patient.profile_pic.url }}" alt="Foto de perfil">
+      <h6>Paciente</h6>
+      <h2>{{ request.user.first_name }}</h2>
+    </header>
+    <ul>
+      <li class="icon-dashboard"><a href="/patient-dashboard">Panel</a></li>
+      <li class="icon-calendar"><a href="/patient-appointment">Citas</a></li>
+      <li class="icon-users"><a href="/patient-discharge">Altas</a></li>
+    </ul>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main>
+    <!-- Barra superior -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+      <a href="/patient-dashboard" class="navbar-brand">HOSPITAL MANAGEMENT</a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ml-auto">
+          <a href="/logout" class="nav-item nav-link">Cerrar sesión</a>
+        </div>
+      </div>
+    </nav>
+
+    <div style="margin-top: 80px;">
+      {% block content %}
+      {% endblock content %}
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Hospital Management System | Desarrollado con ❤️</p>
+    </footer>
+  </main>
+
+  <script>
+    // Script para alternar el menú en móviles
+    document.querySelector(".menu-toggle").addEventListener("click", function () {
+      document.getElementById("sidebar").classList.toggle("active");
+    });
+  </script>
+
+</body>
+
+</html>

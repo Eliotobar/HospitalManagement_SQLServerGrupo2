@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Detalles del Doctor</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    body {
+      background: #f4f6f9;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .details-container {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 20px;
+    }
+
+    .detail-card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+    }
+
+    .detail-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .detail-header {
+      background: linear-gradient(90deg, #007bff, #6610f2);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+
+    .detail-header h3 {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .detail-body {
+      padding: 30px;
+    }
+
+    .info-box {
+      background: #f9fafc;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      transition: background 0.3s;
+    }
+
+    .info-box:hover {
+      background: #eef3ff;
+    }
+
+    .info-icon {
+      width: 60px;
+      height: 60px;
+      background: #007bff;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-right: 20px;
+    }
+
+    .info-content h5 {
+      margin: 0;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .info-content p {
+      margin: 3px 0 0;
+      color: #555;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .info-box {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .info-icon {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="details-container">
+    <div class="detail-card">
+      <div class="detail-header">
+        <h3>Detalles del Doctor Asignado</h3>
+      </div>
+
+      <div class="detail-body">
+        <div class="info-box">
+          <div class="info-icon"><i class="fa fa-user-md"></i></div>
+          <div class="info-content">
+            <h5>Nombre del Doctor</h5>
+            <p>{{ doctorName }}</p>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-icon"><i class="fa fa-info-circle"></i></div>
+          <div class="info-content">
+            <h5>Síntomas</h5>
+            <p>{{ symptoms }}</p>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-icon"><i class="fa fa-phone"></i></div>
+          <div class="info-content">
+            <h5>Contacto</h5>
+            <p>{{ doctorMobile }}</p>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-icon"><i class="fa fa-map-marker-alt"></i></div>
+          <div class="info-content">
+            <h5>Dirección</h5>
+            <p>{{ doctorAddress }}</p>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-icon"><i class="fa fa-hospital"></i></div>
+          <div class="info-content">
+            <h5>Departamento</h5>
+            <p>{{ doctorDepartment }}</p>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-icon"><i class="fa fa-calendar-day"></i></div>
+          <div class="info-content">
+            <h5>Fecha de Admisión</h5>
+            <p>{{ admitDate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

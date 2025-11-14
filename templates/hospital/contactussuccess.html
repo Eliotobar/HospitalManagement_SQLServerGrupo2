@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Mensaje Enviado | HMS</title>
+
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0072ff, #8811c5);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .success-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 60px 40px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+    }
+
+    .success-container h1 {
+      font-size: 2.2rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .success-container p {
+      font-size: 1.1rem;
+      color: #e8e8e8;
+      margin-bottom: 30px;
+    }
+
+    .btn-home {
+      background: linear-gradient(to right, #0072ff, #8811c5);
+      border: none;
+      padding: 12px 35px;
+      border-radius: 25px;
+      color: white;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .btn-home:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #0052cc, #6a00a5);
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9rem;
+      margin-top: auto;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  </style>
+</head>
+
+<body>
+
+  {% include "hospital/navbar.html" %}
+
+  <div class="success-container">
+    <img src="{% static 'images/success.gif' %}" alt="success" width="120" height="120">
+    <h1>¡Tu mensaje ha sido enviado exitosamente!</h1>
+    <p>Gracias por contactarnos. Tu opinión es muy valiosa para mejorar nuestro servicio.</p>
+    <a class="btn-home" href="/">🏠 Volver al Inicio</a>
+  </div>
+
+  <footer>
+    © 2025 Sistema de Gestión Hospitalaria — Todos los derechos reservados.
+  </footer>
+
+  {% include "hospital/footer.html" %}
+</body>
+
+</html>

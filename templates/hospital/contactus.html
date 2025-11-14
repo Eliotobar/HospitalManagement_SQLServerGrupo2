@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Feedback | HMS</title>
+
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0072ff, #8811c5);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feedback-container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      max-width: 700px;
+      margin: 80px auto;
+    }
+
+    .feedback-title {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .form-control {
+      border-radius: 25px;
+      padding: 12px 20px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .btn-submit {
+      display: block;
+      width: 100%;
+      border: none;
+      border-radius: 25px;
+      padding: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      background: linear-gradient(to right, #0072ff, #8811c5);
+      color: white;
+      transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(to right, #0052cc, #6a00a5);
+      transform: scale(1.03);
+    }
+
+    footer {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+      margin-top: auto;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  {% include "hospital/navbar.html" %}
+
+  <div class="feedback-container">
+    <h3 class="feedback-title">📨 ¡Envíanos tus valiosos comentarios!</h3>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }}
+      </div>
+
+      <button type="submit" class="btn-submit">Enviar Comentario</button>
+    </form>
+  </div>
+
+  <footer>
+    © 2025 Sistema de Gestión Hospitalaria — Todos los derechos reservados.
+  </footer>
+
+  {% include "hospital/footer.html" %}
+</body>
+
+</html>

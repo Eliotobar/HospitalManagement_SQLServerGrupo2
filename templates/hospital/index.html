@@ -1,0 +1,90 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+  <style>
+    .hero {
+      background: url("{% static 'images/back.jpg' %}") center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 120px 20px;
+      border-radius: 0;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .glow {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 0 10px #fff, 0 0 20px #a00000, 0 0 30px #ff0000;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px #fff, 0 0 10px #a00000, 0 0 15px #ff0000;
+      }
+      to {
+        text-shadow: 0 0 10px #fff, 0 0 20px #a00000, 0 0 30px #ff0000, 0 0 40px #ff0000;
+      }
+    }
+
+    .hero h3 {
+      margin-top: 1rem;
+      font-weight: 400;
+    }
+
+    .btn-danger {
+      font-size: 1.2rem;
+      padding: 0.75rem 2rem;
+      border-radius: 30px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 768px) {
+      .glow {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<!-- Hero principal -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="glow">Hospital Management System</h1>
+    <h3 class="mt-4">¿Emergencia?</h3>
+    <a class="btn btn-danger btn-lg mt-3" href="/patientclick" role="button">
+      ¡Sacar Cita Ahora!
+    </a>
+  </div>
+</section>
+
+<!-- Sección inferior con cards -->
+<div class="container my-5">
+  {% include "hospital/admin_doctor_patient_card.html" %}
+</div>
+
+{% endblock content %}

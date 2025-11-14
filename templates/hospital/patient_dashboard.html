@@ -1,0 +1,14 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+  <br><br>
+  {% include 'hospital/patient_dashboard_cards.html' %}
+
+  <br><br>
+  <!-- Aquí iría el card de detalles del doctor -->
+  {% include 'hospital/patient_view_details_card.html' %}
+</div>
+
+{% endblock content %}

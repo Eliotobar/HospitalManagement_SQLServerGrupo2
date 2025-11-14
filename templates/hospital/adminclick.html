@@ -1,0 +1,70 @@
+{% extends 'hospital/homebase.html' %}
+{% block content %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>Panel del Administrador - Hospital</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #56ccf2, #2f80ed);
+      color: #fff;
+    }
+
+    .jumbotron {
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      color: #333;
+      margin-top: 100px;
+    }
+
+    .display-4 {
+      font-weight: 700;
+      color: #2f80ed;
+    }
+
+    .lead {
+      font-size: 1.2rem;
+    }
+
+    .btn-lg {
+      border-radius: 30px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      margin: 10px;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .btn-lg:hover {
+      transform: scale(1.05);
+    }
+
+    .footer-text {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+  </style>
+</head>
+
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-4">👋 Hola, Administrador</h1>
+    <p class="lead">Bienvenido al Sistema de Gestión Hospitalaria</p>
+    <hr class="my-4">
+    <p class="lead">
+      <a class="btn btn-danger btn-lg" href="/adminsignup" role="button">Registrarse</a>
+      <a class="btn btn-success btn-lg" href="/adminlogin" role="button">Iniciar Sesión</a>
+    </p>
+  </div>
+
+  <div class="footer-text">
+    © 2025 Sistema de Gestión Hospitalaria — Todos los derechos reservados.
+  </div>
+</div>
+
+{% endblock content %}

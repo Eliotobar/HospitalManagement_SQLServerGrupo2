@@ -1,0 +1,29 @@
+{% extends 'hospital/homebase.html' %}
+
+{% block content %}
+<br><br>
+<div class="container text-center my-5">
+  <div class="card shadow-lg border-0 rounded-4 p-5" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb);">
+    <div class="card-body">
+      <h1 class="display-5 fw-bold text-primary mb-3">
+        👨‍⚕️ ¡Hola, Doctor!
+      </h1>
+      <p class="lead mb-4 text-secondary">
+        Bienvenido al <strong>Sistema de Gestión Hospitalaria</strong>.<br>
+        Administra tus pacientes, citas y registros de manera rápida y sencilla.
+      </p>
+      <hr class="my-4" style="width:60%;margin:auto;border-top:2px solid #0d6efd;">
+      
+      <div class="mt-4">
+        <a href="/doctorsignup" class="btn btn-danger btn-lg mx-2 rounded-pill px-4 py-2 shadow-sm">
+          <i class="fas fa-user-plus me-2"></i> Solicitar Registro
+        </a>
+        <a href="/doctorlogin" class="btn btn-success btn-lg mx-2 rounded-pill px-4 py-2 shadow-sm">
+          <i class="fas fa-sign-in-alt me-2"></i> Iniciar Sesión
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>HMS - Account Pending</title>
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .jumbotron {
+      background: #ffffff;
+      padding: 3rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 700px;
+      margin: 100px auto;
+    }
+
+    .jumbotron h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .jumbotron p.lead {
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-logout {
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  {% include "hospital/navbar.html" %}
+
+  <div class="jumbotron">
+    <h1>Hello {{request.user.first_name}}</h1>
+    <p class="lead">Your account is not approved yet.</p>
+    <p class="lead">Our team is reviewing your profile. Soon your account will be confirmed!</p>
+    <hr class="my-4">
+    <p>Please check back later.</p>
+    <a class="btn btn-primary btn-lg btn-logout" href="/logout" role="button">Cerrar sesión for now</a>
+  </div>
+
+  {% include "hospital/footer.html" %}
+</body>
+
+</html>

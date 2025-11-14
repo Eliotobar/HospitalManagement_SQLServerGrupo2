@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Hospital Management</title>
+
+  <!-- Bootstrap & FontAwesome -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <style>
+    /* --- Navbar base --- */
+    .navbar {
+      background: linear-gradient(90deg, #004aad, #007bff);
+      padding: 0.8rem 1.2rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #fff !important;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand i {
+      margin-right: 8px;
+      color: #ffc107;
+    }
+
+    .navbar-nav .nav-link {
+      color: #f8f9fa !important;
+      font-weight: 500;
+      margin-right: 12px;
+      transition: color 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: #ffc107 !important;
+    }
+
+    /* --- Botón de cierre de sesión --- */
+    .btn-logout {
+      border: none;
+      background-color: #dc3545;
+      color: #fff;
+      border-radius: 20px;
+      padding: 5px 15px;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      background-color: #c82333;
+      transform: scale(1.05);
+    }
+
+    /* --- Ajustes responsive --- */
+    @media (max-width: 768px) {
+      .navbar-nav .nav-link {
+        margin-right: 0;
+        text-align: center;
+        padding: 8px 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+    <a href="/" class="navbar-brand">
+      <i class="fa-solid fa-hospital"></i> Hospital Management
+    </a>
+
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+      <div class="navbar-nav">
+        <a href="/adminclick" class="nav-item nav-link">
+          <i class="fa-solid fa-user-shield"></i> Admin
+        </a>
+        <a href="/doctorclick" class="nav-item nav-link">
+          <i class="fa-solid fa-user-md"></i> Doctor
+        </a>
+        <a href="/patientclick" class="nav-item nav-link">
+          <i class="fa-solid fa-user-injured"></i> Pacientes
+        </a>
+        <a href="/contactus" class="nav-item nav-link">
+          <i class="fa-solid fa-envelope"></i> Contacto
+        </a>
+      </div>
+
+      <div class="navbar-nav ml-auto">
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post" class="form-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn-logout">
+            <i class="fa fa-sign-out-alt"></i> Cerrar sesión
+          </button>
+        </form>
+        {% else %}
+        <a href="/adminlogin" class="nav-item nav-link">
+          <i class="fa fa-sign-in-alt"></i> Iniciar sesión
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <br><br><br>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{% extends 'hospital/homebase.html' %}
+
+{% block content %}
+
+<br><br>
+
+<div class="jumbotron text-center" style="margin-bottom:0px; background-color:#f8f9fa; padding:3rem; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <h1 class="display-4 mb-3">Hello, Paciente</h1>
+  <p class="lead mb-4">Welcome to the Hospital Management System.</p>
+  <hr class="my-4">
+  <p class="lead">
+    <a class="btn btn-danger btn-lg mr-2" href="/patientsignup" role="button">Registrar Your Account</a>
+    <a class="btn btn-success btn-lg" href="/patientlogin" role="button">Iniciar sesión</a>
+  </p>
+</div>
+
+{% endblock content %}

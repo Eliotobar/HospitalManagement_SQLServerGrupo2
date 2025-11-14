@@ -1,0 +1,150 @@
+{% extends 'hospital/patient_base.html' %}
+{% load static %}
+{% block content %}
+<br><br>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* --- Tarjetas principales --- */
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .card h6 {
+      color: #fff;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .card i {
+      font-size: 40px;
+      opacity: 0.9;
+    }
+
+    /* --- Colores degradados --- */
+    .bg-c-blue {
+      background: linear-gradient(135deg, #007bff, #00b4ff);
+    }
+
+    .bg-c-green {
+      background: linear-gradient(135deg, #28a745, #6fdc6f);
+    }
+
+    .bg-c-orange {
+      background: linear-gradient(135deg, #ff9f00, #ffbb33);
+    }
+
+    .bg-c-red {
+      background: linear-gradient(135deg, #ff4b5c, #ff7676);
+    }
+
+    /* --- Espaciado y texto --- */
+    .card-body {
+      padding: 30px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .card-body a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .card-body a:hover {
+      color: #f8f9fa;
+      text-decoration: underline;
+    }
+
+    .dashboard-title {
+      text-align: center;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 40px;
+      font-size: 2rem;
+    }
+
+    /* --- Responsive ajustes --- */
+    @media (max-width: 768px) {
+      .card-body {
+        padding: 20px;
+      }
+
+      .dashboard-title {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+
+<div class="container">
+  <h2 class="dashboard-title">Panel del Paciente</h2>
+
+  <div class="row">
+
+    <!-- 🔹 Ver citas -->
+    <div class="col-md-6 col-xl-4 mb-4">
+      <div class="card bg-c-blue">
+        <div class="card-body">
+          <a href="/patient-view-appointment">
+            <i class="fa-solid fa-calendar-check mb-3"></i>
+            <h6>Ver tus citas</h6>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔹 Reservar cita -->
+    <div class="col-md-6 col-xl-4 mb-4">
+      <div class="card bg-c-green">
+        <div class="card-body">
+          <a href="/patient-book-appointment">
+            <i class="fa-solid fa-notes-medical mb-3"></i>
+            <h6>Reservar nueva cita</h6>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔹 Ver historial médico -->
+    <div class="col-md-6 col-xl-4 mb-4">
+      <div class="card bg-c-orange">
+        <div class="card-body">
+          <a href="/patient-history">
+            <i class="fa-solid fa-file-medical-alt mb-3"></i>
+            <h6>Ver historial médico</h6>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🔹 Contactar al hospital -->
+    <div class="col-md-6 col-xl-4 mb-4">
+      <div class="card bg-c-red">
+        <div class="card-body">
+          <a href="/contactus">
+            <i class="fa-solid fa-phone-volume mb-3"></i>
+            <h6>Contactar al hospital</h6>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<br><br><br><br>
+{% endblock content %}

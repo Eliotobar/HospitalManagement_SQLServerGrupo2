@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+{% load widget_tweaks %}
+<html lang="es" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Registro de Administrador | HMS</title>
+
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    .signup-card {
+      background: #fff;
+      color: #333;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      width: 500px;
+      max-width: 90%;
+      padding: 30px;
+    }
+
+    .note {
+      text-align: center;
+      background: linear-gradient(to right, #0072ff, #8811c5);
+      color: white;
+      font-weight: bold;
+      border-radius: 15px 15px 0 0;
+      padding: 15px 0;
+      margin: -30px -30px 30px -30px;
+    }
+
+    .form-control {
+      border-radius: 30px;
+      height: 45px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
+    .btnSubmit {
+      border: none;
+      border-radius: 30px;
+      padding: 12px;
+      width: 100%;
+      background: linear-gradient(to right, #0072ff, #8811c5);
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .btnSubmit:hover {
+      background: linear-gradient(to right, #0052cc, #6a00a5);
+      transform: scale(1.03);
+    }
+
+    .login-link {
+      margin-top: 15px;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .login-link a {
+      color: #0072ff;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  {% include "hospital/navbar.html" %}
+
+  <div class="signup-card mt-5">
+    <div class="note">
+      <p>Registrar Nuevo Administrador</p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="form-group">
+            {% render_field form.first_name class="form-control" placeholder="Nombre" %}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            {% render_field form.last_name class="form-control" placeholder="Apellido" %}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        {% render_field form.username class="form-control" placeholder="Usuario" %}
+      </div>
+      <div class="form-group">
+        {% render_field form.password class="form-control" placeholder="Contraseña" %}
+      </div>
+
+      <button type="submit" class="btnSubmit">Registrar</button>
+
+      <div class="text-center login-link">
+        ¿Ya tienes una cuenta? <a href="/adminlogin">Inicia sesión aquí</a>
+      </div>
+    </form>
+  </div>
+
+  <footer>
+    © 2025 Sistema de Gestión Hospitalaria — Todos los derechos reservados.
+  </footer>
+
+  {% include "hospital/footer.html" %}
+</body>
+
+</html>

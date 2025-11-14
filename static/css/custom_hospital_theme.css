@@ -1,0 +1,106 @@
+
+/* Custom hospital-themed modern stylesheet - automatically injected */
+:root{
+  --primary: #0b7285; /* teal-blue */
+  --accent: #2b8a3e;  /* green */
+  --muted: #f8f9fa;
+  --text: #0f1724;
+  --card: #ffffff;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(15,23,36,0.08);
+  --glass: rgba(255,255,255,0.7);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+body{
+  background: linear-gradient(180deg, #f6fbfc 0%, #ffffff 100%);
+  color: var(--text);
+  margin:0;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+.container, .content {
+  max-width:1100px;
+  margin: 28px auto;
+  padding: 18px;
+}
+.header {
+  background: linear-gradient(90deg, rgba(11,114,133,0.10), rgba(43,138,62,0.06));
+  border-radius: 16px;
+  padding: 18px 22px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  box-shadow: var(--shadow);
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.brand .logo {
+  width:56px; height:56px; border-radius:10px; background:var(--card); display:flex; align-items:center; justify-content:center; font-weight:700;
+  box-shadow: 0 6px 14px rgba(11,114,133,0.06);
+}
+.brand h1 { font-size:20px; margin:0; }
+.nav {
+  margin-left:auto;
+  display:flex;
+  gap:10px;
+}
+.btn {
+  background: var(--primary);
+  color: white;
+  padding:8px 14px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  box-shadow: 0 6px 12px rgba(11,114,133,0.08);
+}
+.btn.secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid rgba(11,114,133,0.12);
+}
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding:16px;
+  box-shadow: var(--shadow);
+  margin-bottom:16px;
+}
+.table {
+  width:100%;
+  border-collapse:collapse;
+}
+.table th, .table td {
+  text-align:left;
+  padding:12px 10px;
+  border-bottom:1px solid #eef2f6;
+}
+.search-input{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e6eef2;
+  width:260px;
+}
+.form-input{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid #e6eef2;
+  width:100%;
+  box-sizing:border-box;
+}
+.footer {
+  text-align:center;
+  color:#6b7280;
+  padding:22px 0;
+  font-size:14px;
+}
+.badge {
+  display:inline-block;
+  padding:6px 8px;
+  border-radius:8px;
+  background:var(--muted);
+  color:var(--text);
+  font-weight:600;
+}

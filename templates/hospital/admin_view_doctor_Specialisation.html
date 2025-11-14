@@ -1,0 +1,89 @@
+{% extends 'hospital/admin_base.html' %}
+{% block content %}
+
+<head>
+  <meta charset="UTF-8">
+  <title>Departamentos y Doctores</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  <style>
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin: 0;
+      color: white;
+    }
+
+    .panel-heading {
+      background: linear-gradient(to right, #00b4db, #0083b0);
+      color: white;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .panel {
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 40px;
+    }
+
+    .table {
+      background-color: white;
+    }
+
+    .table th {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+    }
+
+    .table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .container {
+      margin-top: 60px;
+    }
+  </style>
+</head>
+
+<div class="container">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h6 class="panel-title">Departamentos y Doctores Registrados</h6>
+    </div>
+    <div class="panel-body">
+      <table class="table table-hover table-striped" id="dev-table">
+        <thead>
+          <tr>
+            <th>Departamento</th>
+            <th>Nombre del Doctor</th>
+            <th>Contacto</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in doctors %}
+          <tr>
+            <td>{{ d.department }}</td>
+            <td>{{ d.get_name }}</td>
+            <td>{{ d.mobile }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3">No hay doctores registrados en este momento.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

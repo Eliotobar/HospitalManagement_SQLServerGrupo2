@@ -1,0 +1,47 @@
+{% extends 'hospital/homebase.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container my-5">
+  <div class="card shadow-lg p-4 rounded-4">
+    <h2 class="text-center mb-4">👨‍⚕️ Aprobar Doctores</h2>
+    <table class="table table-hover align-middle">
+      <thead class="table-primary">
+        <tr>
+          <th>Nombre</th>
+          <th>Foto</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+          <th>Departamento</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for d in doctors %}
+        <tr>
+          <td>{{ d.get_name }}</td>
+          <td>
+            {% if d.profile_pic %}
+              <img src="{{ d.profile_pic.url }}" alt="Perfil Pic" height="50" width="50" class="rounded-circle">
+            {% else %}
+              <img src="{% static 'images/default_profile.png' %}" alt="Sin foto" height="50" width="50" class="rounded-circle">
+            {% endif %}
+          </td>
+          <td>{{ d.mobile }}</td>
+          <td>{{ d.address }}</td>
+          <td>{{ d.department }}</td>
+          <td>
+            <a href="{% url 'approve-doctor' d.id %}" class="btn btn-success btn-sm">
+              <i class="fas fa-check"></i> Aprobar
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock content %}
+
+

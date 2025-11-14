@@ -1,0 +1,94 @@
+{% extends 'hospital/homebase.html' %}
+{% load widget_tweaks %}
+
+{% block title %}Registro de Doctor | HMS{% endblock title %}
+
+{% block content %}
+<style>
+  body {
+    background: linear-gradient(135deg, #81d4fa, #4fc3f7);
+  }
+  .register-card {
+    max-width: 700px;
+    margin: 80px auto;
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 35px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+  .register-card h2 {
+    color: #0288d1;
+    font-weight: 700;
+    margin-bottom: 25px;
+  }
+  .form-control {
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 1rem;
+  }
+  .btn-register {
+    background: #0288d1;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  .btn-register:hover {
+    background: #0277bd;
+  }
+  .small-text a {
+    color: #0277bd;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .small-text a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container">
+  <div class="register-card">
+    <h2 class="text-center">🩺 Registro de Nuevo Doctor</h2>
+    <p class="text-center text-muted mb-4">Completa tus datos para solicitar tu registro en el sistema.</p>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          {% render_field userForm.first_name class="form-control" placeholder="Nombre" %}
+        </div>
+        <div class="col-md-6 mb-3">
+          {% render_field userForm.last_name class="form-control" placeholder="Apellido" %}
+        </div>
+        <div class="col-md-6 mb-3">
+          {% render_field userForm.username class="form-control" placeholder="Usuario" %}
+        </div>
+        <div class="col-md-6 mb-3">
+          {% render_field userForm.password class="form-control" placeholder="Contraseña" %}
+        </div>
+        <div class="col-md-6 mb-3">
+          {% render_field doctorForm.department class="form-control" placeholder="Departamento" %}
+        </div>
+        <div class="col-md-6 mb-3">
+          {% render_field doctorForm.mobile class="form-control" placeholder="Teléfono" %}
+        </div>
+        <div class="col-md-12 mb-3">
+          {% render_field doctorForm.address class="form-control" placeholder="Dirección" %}
+        </div>
+        <div class="col-md-12 mb-4">
+          {% render_field doctorForm.profile_pic class="form-control" placeholder="Foto de Perfil" %}
+        </div>
+      </div>
+      <button type="submit" class="btn-register mt-2">Registrar Doctor</button>
+    </form>
+
+    <p class="mt-4 small-text text-center">
+      ¿Ya tienes una cuenta? <a href="{% url 'doctorlogin' %}">Inicia sesión aquí</a>
+    </p>
+  </div>
+</div>
+{% endblock content %}
