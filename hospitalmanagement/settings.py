@@ -12,12 +12,8 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Seguridad y depuración
 # -----------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'clave_segura_por_defecto')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
-# ALLOWED_HOSTS adaptado a Render Free
-ALLOWED_HOSTS = ['hospitalmanagement-sqlservergrupo2.onrender.com']
-if DEBUG:
-    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
+DEBUG = True  # temporal para Render Free
+ALLOWED_HOSTS = ['*']  # acepta cualquier host temporalmente
 
 # -----------------------
 # Apps y Middleware
@@ -74,10 +70,10 @@ WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.environ.get('DB_NAME', 'hospital_ykn0'),
-        'USER': os.environ.get('DB_USER', 'admin'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
@@ -132,6 +128,4 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 # -----------------------
 if DEBUG:
     from django.conf.urls.static import static
-    from django.urls import path
     urlpatterns = static(MEDIA_URL, document_root=MEDIA_ROOT)
-
