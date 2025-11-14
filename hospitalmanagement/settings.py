@@ -4,33 +4,34 @@ Adaptado para despliegue en Render (PostgreSQL) con fallback local.
 """
 
 import os
+from pathlib import Path
 import dj_database_url
+from dotenv import load_dotenv
 
 # ---------------------------------------------------
-# BASE PATHS
+# CARGA VARIABLES DE ENTORNO
 # ---------------------------------------------------
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(os.path.join(BASE_DIR, '.env'))  # carga variables desde .env
 
 # ---------------------------------------------------
-# SECURITY
+# RUTAS
 # ---------------------------------------------------
-# Lee SECRET_KEY desde variable de entorno (no subir la real al repo)
+TEMPLATE_DIR = BASE_DIR / 'templates'
+STATIC_DIR = BASE_DIR / 'static'
+MEDIA_DIR = BASE_DIR / 'media'
+
+# ---------------------------------------------------
+# SEGURIDAD
+# ---------------------------------------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'reemplazar_con_una_clave_secreta_local')
-
-# DEBUG desde variable de entorno (en Render pondrás False)
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-# ALLOWED_HOSTS desde variable (separa por comas en Render)
 allowed = os.environ.get('ALLOWED_HOSTS', '')
-if allowed:
-    ALLOWED_HOSTS = [h.strip() for h in allowed.split(',')]
-else:
-    ALLOWED_HOSTS = []  # en local, localhost está bien
+ALLOWED_HOSTS = [h.strip() for h in allowed.split(',')] if allowed else []
 
 # ---------------------------------------------------
-# APPLICATIONS
+# APLICACIONES
 # ---------------------------------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -81,10 +82,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 
 # ---------------------------------------------------
-# DATABASE (PostgreSQL en Render / fallback SQLite local)
+# DATABASE
 # ---------------------------------------------------
-# Render va a proporcionar DATABASE_URL en formato:
-# postgresql://USER:PASSWORD@HOST:PORT/DATABASE
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
 
 if DATABASE_URL:
@@ -96,16 +95,15 @@ if DATABASE_URL:
         )
     }
 else:
-    # Fallback local: sqlite (útil para probar localmente sin Postgres)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
 
 # ---------------------------------------------------
-# PASSWORD VALIDATION
+# VALIDACIÓN DE CONTRASEÑAS
 # ---------------------------------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -115,38 +113,33 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ---------------------------------------------------
-# INTERNATIONALIZATION
+# INTERNACIONALIZACIÓN
 # ---------------------------------------------------
 LANGUAGE_CODE = 'es'
 TIME_ZONE = 'America/El_Salvador'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale'),
-]
+LOCALE_PATHS = [BASE_DIR / 'locale']
 
 # ---------------------------------------------------
 # STATIC & MEDIA FILES
 # ---------------------------------------------------
 STATIC_URL = '/static/'
-# Carpeta donde collectstatic dejará los archivos (útil en Render)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [STATIC_DIR]
 
-# Media (archivos subidos) - en producción deberías usar S3 u otro servicio
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = MEDIA_DIR
 
 # ---------------------------------------------------
-# LOGIN / LOGOUT CONFIG
+# LOGIN / LOGOUT
 # ---------------------------------------------------
 LOGIN_REDIRECT_URL = '/afterlogin'
 LOGOUT_REDIRECT_URL = '/'
 
 # ---------------------------------------------------
-# EMAIL CONFIG (Opcional)
+# EMAIL (opcional)
 # ---------------------------------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -160,7 +153,3 @@ EMAIL_RECEIVING_USER = ['to@gmail.com']
 # OTRAS CONFIGS
 # ---------------------------------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-
-
