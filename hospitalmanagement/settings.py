@@ -2,19 +2,26 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+# -----------------------
+# Rutas base
+# -----------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # -----------------------
 # Seguridad y depuración
 # -----------------------
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'clave_segura_por_defecto')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*'] if DEBUG else [os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
+# ALLOWED_HOSTS dinámico según entorno
+if DEBUG:
+    ALLOWED_HOSTS = ['*']  # Desarrollo local
+else:
+    ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'hospitalmanagement-sqlservergrupo2.onrender.com')]
 
 # -----------------------
-# Apps y middleware
+# Aplicaciones instaladas
 # -----------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,9 +34,12 @@ INSTALLED_APPS = [
     'widget_tweaks',
 ]
 
+# -----------------------
+# Middleware
+# -----------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Archivos estáticos
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -68,20 +78,20 @@ WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 # -----------------------
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DB_ENGINE'),
+        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT', '5432'),
         'OPTIONS': {
-            'sslmode': 'require',  # ⚡ SSL obligatorio en Render
-        },
+            'sslmode': 'require',  # obligatorio en Render
+        }
     }
 }
 
 # -----------------------
-# Password validators
+# Validadores de contraseña
 # -----------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -100,7 +110,7 @@ USE_L10N = True
 USE_TZ = True
 
 # -----------------------
-# Static & Media
+# Archivos estáticos y media
 # -----------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -110,6 +120,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Servir media en desarrollo
 if DEBUG:
     from django.conf.urls.static import static
     from django.urls import path
@@ -125,16 +136,17 @@ LOGOUT_REDIRECT_URL = '/'
 # Email
 # -----------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT'))
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS') == 'True'
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # -----------------------
 # DEFAULT_AUTO_FIELD
 # -----------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
 
