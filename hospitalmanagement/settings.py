@@ -1,6 +1,6 @@
 """
 Django settings for hospitalmanagement project.
-Adaptado para despliegue en Render (PostgreSQL) con fallback local.
+Adaptado para despliegue en Render (PostgreSQL).
 """
 
 import os
@@ -25,7 +25,7 @@ MEDIA_DIR = BASE_DIR / 'media'
 # SEGURIDAD
 # ---------------------------------------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'reemplazar_con_una_clave_secreta_local')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 allowed = os.environ.get('ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [h.strip() for h in allowed.split(',')] if allowed else []
@@ -82,25 +82,19 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 
 # ---------------------------------------------------
-# DATABASE
+# DATABASE (PostgreSQL en Render)
 # ---------------------------------------------------
-DATABASE_URL = os.environ.get('DATABASE_URL', '')
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if not DATABASE_URL:
+    raise Exception("Debes definir DATABASE_URL en tu .env")
 
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+DATABASES = {
+    'default': dj_database_url.parse(
+        DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 
 # ---------------------------------------------------
 # VALIDACIÓN DE CONTRASEÑAS
@@ -139,15 +133,15 @@ LOGIN_REDIRECT_URL = '/afterlogin'
 LOGOUT_REDIRECT_URL = '/'
 
 # ---------------------------------------------------
-# EMAIL (opcional)
+# EMAIL
 # ---------------------------------------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'from@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'xyz')
-EMAIL_RECEIVING_USER = ['to@gmail.com']
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_RECEIVING_USER = [EMAIL_HOST_USER]
 
 # ---------------------------------------------------
 # OTRAS CONFIGS
