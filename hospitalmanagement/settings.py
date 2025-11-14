@@ -1,25 +1,23 @@
 import os
 from pathlib import Path
-import dj_database_url
 from dotenv import load_dotenv
 
 # Carga variables desde .env
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-# Rutas
-TEMPLATE_DIR = BASE_DIR / 'templates'
-STATIC_DIR = BASE_DIR / 'static'
-MEDIA_DIR = BASE_DIR / 'media'
-
-# Seguridad
+# -----------------------
+# Seguridad y configuración básica
+# -----------------------
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 allowed = os.environ.get('ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [h.strip() for h in allowed.split(',')] if allowed else []
 
-# Aplicaciones
+# -----------------------
+# Apps y Middleware
+# -----------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,7 +29,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
 ]
 
-# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -45,10 +42,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hospitalmanagement.urls'
 
+# -----------------------
+# Templates
+# -----------------------
+TEMPLATES_DIR = BASE_DIR / 'templates'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATE_DIR],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,16 +64,31 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 
-# Database PostgreSQL
-DATABASE_URL = os.environ.get('DATABASE_URL')
-if not DATABASE_URL:
-    raise Exception("Debes definir DATABASE_URL en tu .env")
+# -----------------------
+# Base de datos PostgreSQL
+# -----------------------
+# --- DEBUG: verificar variables de entorno ---
+print("DB_ENGINE:", os.environ.get('DB_ENGINE'))
+print("DB_NAME:", os.environ.get('DB_NAME'))
+print("DB_USER:", os.environ.get('DB_USER'))
+print("DB_PASSWORD:", os.environ.get('DB_PASSWORD'))
+print("DB_HOST:", os.environ.get('DB_HOST'))
+print("DB_PORT:", os.environ.get('DB_PORT'))
 
 DATABASES = {
-    'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
+    'default': {
+        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+    }
 }
 
-# Password validators
+# -----------------------
+# Validadores de contraseñas
+# -----------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -80,33 +96,37 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# -----------------------
 # Internacionalización
+# -----------------------
 LANGUAGE_CODE = 'es'
 TIME_ZONE = 'America/El_Salvador'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-LOCALE_PATHS = [BASE_DIR / 'locale']
 
-# Static & Media
+# -----------------------
+# Archivos estáticos y media
+# -----------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [STATIC_DIR]
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = MEDIA_DIR
+MEDIA_ROOT = BASE_DIR / 'media'
 
-# Login / Logout
+# -----------------------
+# Login/Logout
+# -----------------------
 LOGIN_REDIRECT_URL = '/afterlogin'
 LOGOUT_REDIRECT_URL = '/'
 
+# -----------------------
 # Email
+# -----------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_RECEIVING_USER = [EMAIL_HOST_USER]
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
