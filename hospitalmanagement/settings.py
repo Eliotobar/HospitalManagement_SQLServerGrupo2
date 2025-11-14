@@ -12,9 +12,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Seguridad y depuración
 # -----------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'clave_segura_por_defecto')
-
-# DEBUG dinámico según variable de entorno
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # ALLOWED_HOSTS dinámico según entorno
 if DEBUG:
@@ -41,7 +39,7 @@ INSTALLED_APPS = [
 # -----------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise para producción
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Para producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -84,7 +82,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME', 'hospital_ykn0'),
         'USER': os.environ.get('DB_USER', 'admin'),
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'HOST': os.environ.get('DB_HOST', ''),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
@@ -114,12 +112,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-
-# WhiteNoise: servir archivos estáticos comprimidos en producción
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Servir media en desarrollo
+if DEBUG:
+    from django.conf.urls.static import static
+    from django.urls import path
+    urlpatterns = static(MEDIA_URL, document_root=MEDIA_ROOT)
 
 # -----------------------
 # Login / Logout
@@ -128,7 +130,7 @@ LOGIN_REDIRECT_URL = '/afterlogin'
 LOGOUT_REDIRECT_URL = '/'
 
 # -----------------------
-# Email (opcional)
+# Email
 # -----------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
@@ -138,17 +140,10 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # -----------------------
-# Servir media en desarrollo
-# -----------------------
-if DEBUG:
-    from django.conf.urls.static import static
-    from django.urls import path
-    urlpatterns = static(MEDIA_URL, document_root=MEDIA_ROOT)
-
-# -----------------------
-# DEFAULT_AUTO_FIELD para evitar warnings de modelos
+# DEFAULT_AUTO_FIELD
 # -----------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
 
