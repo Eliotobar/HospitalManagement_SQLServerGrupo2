@@ -12,9 +12,9 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Seguridad y depuración
 # -----------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'clave_segura_por_defecto')
-DEBUG = True  # Render Free requiere DEBUG=True para servir archivos y evitar 400
+DEBUG = True  # En Render Free para desarrollo
 
-# ALLOWED_HOSTS amplio para Render Free
+# ALLOWED_HOSTS para Render Free (acepta cualquier host mientras depuras)
 ALLOWED_HOSTS = ['*']
 
 # -----------------------
@@ -33,7 +33,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Para servir static en producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,7 +59,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',  # Para MEDIA_URL
             ],
         },
     },
@@ -111,9 +109,6 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Whitenoise para servir archivos estáticos en Render Free
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # -----------------------
 # Login / Logout
 # -----------------------
@@ -131,10 +126,11 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # -----------------------
-# Servir media en desarrollo / Render Free
+# Servir media en desarrollo
 # -----------------------
 if DEBUG:
     from django.conf.urls.static import static
     from django.urls import path
     urlpatterns = static(MEDIA_URL, document_root=MEDIA_ROOT)
+
 
