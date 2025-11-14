@@ -2,18 +2,22 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Carga variables desde .env
+# -----------------------
+# Rutas base
+# -----------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # -----------------------
-# Seguridad y configuración básica
+# Seguridad y depuración
 # -----------------------
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'clave_segura_por_defecto')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-allowed = os.environ.get('ALLOWED_HOSTS', '')
-ALLOWED_HOSTS = [h.strip() for h in allowed.split(',')] if allowed else []
+# ALLOWED_HOSTS adaptado a Render Free
+ALLOWED_HOSTS = ['hospitalmanagement-sqlservergrupo2.onrender.com']
+if DEBUG:
+    ALLOWED_HOSTS += ['localhost', '127.0.0.1']
 
 # -----------------------
 # Apps y Middleware
@@ -67,27 +71,19 @@ WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 # -----------------------
 # Base de datos PostgreSQL
 # -----------------------
-# --- DEBUG: verificar variables de entorno ---
-print("DB_ENGINE:", os.environ.get('DB_ENGINE'))
-print("DB_NAME:", os.environ.get('DB_NAME'))
-print("DB_USER:", os.environ.get('DB_USER'))
-print("DB_PASSWORD:", os.environ.get('DB_PASSWORD'))
-print("DB_HOST:", os.environ.get('DB_HOST'))
-print("DB_PORT:", os.environ.get('DB_PORT'))
-
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME', 'hospital_ykn0'),
+        'USER': os.environ.get('DB_USER', 'admin'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
 
 # -----------------------
-# Validadores de contraseñas
+# Validadores de contraseña
 # -----------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -116,7 +112,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # -----------------------
-# Login/Logout
+# Login / Logout
 # -----------------------
 LOGIN_REDIRECT_URL = '/afterlogin'
 LOGOUT_REDIRECT_URL = '/'
@@ -125,8 +121,17 @@ LOGOUT_REDIRECT_URL = '/'
 # Email
 # -----------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+# -----------------------
+# Servir media en desarrollo
+# -----------------------
+if DEBUG:
+    from django.conf.urls.static import static
+    from django.urls import path
+    urlpatterns = static(MEDIA_URL, document_root=MEDIA_ROOT)
+
