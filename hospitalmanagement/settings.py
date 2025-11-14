@@ -79,16 +79,17 @@ WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.environ.get('DB_NAME', 'hospital_ykn0'),
-        'USER': os.environ.get('DB_USER', 'admin'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', ''),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT', '5432'),
         'OPTIONS': {
-            'sslmode': 'require',  # Esto obliga a SSL
+            'sslmode': 'require',  # Render requiere SSL
         },
     }
 }
+
 
 
 

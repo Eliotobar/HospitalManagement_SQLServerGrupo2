@@ -55,7 +55,8 @@
     <h2 class="text-center">🩺 Registro de Nuevo Doctor</h2>
     <p class="text-center text-muted mb-4">Completa tus datos para solicitar tu registro en el sistema.</p>
 
-    <form method="post" enctype="multipart/form-data">
+    <!-- Agregado action para evitar Bad Request 400 -->
+    <form method="post" enctype="multipart/form-data" action="{% url 'doctorsignup' %}">
       {% csrf_token %}
       <div class="row">
         <div class="col-md-6 mb-3">
@@ -92,3 +93,4 @@
   </div>
 </div>
 {% endblock content %}
+
