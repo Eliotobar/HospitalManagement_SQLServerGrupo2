@@ -12,13 +12,18 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Seguridad y depuración
 # -----------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'clave_segura_por_defecto')
-DEBUG = True  # En Render Free para desarrollo
 
-# ALLOWED_HOSTS para Render Free (acepta cualquier host mientras depuras)
-ALLOWED_HOSTS = ['*']
+# DEBUG dinámico según variable de entorno
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+
+# ALLOWED_HOSTS dinámico según entorno
+if DEBUG:
+    ALLOWED_HOSTS = ['*']  # Desarrollo local
+else:
+    ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME', 'hospitalmanagement-sqlservergrupo2.onrender.com')]
 
 # -----------------------
-# Apps y Middleware
+# Aplicaciones instaladas
 # -----------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -27,12 +32,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hospital',
-    'widget_tweaks',
+    'hospital',          # Tu app principal
+    'widget_tweaks',     # Para templates
 ]
 
+# -----------------------
+# Middleware
+# -----------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise para producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -106,6 +115,9 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
+# WhiteNoise: servir archivos estáticos comprimidos en producción
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -132,5 +144,11 @@ if DEBUG:
     from django.conf.urls.static import static
     from django.urls import path
     urlpatterns = static(MEDIA_URL, document_root=MEDIA_ROOT)
+
+# -----------------------
+# DEFAULT_AUTO_FIELD para evitar warnings de modelos
+# -----------------------
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
