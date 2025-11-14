@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path
 from hospital import views
 from django.contrib.auth.views import LoginView, LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,14 +26,12 @@ urlpatterns = [
 
     path('afterlogin', views.afterlogin_view, name='afterlogin'),
 
-    # ✅ Cerrar sesión funcionando correctamente (redirige al inicio)
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
 ]
 
 # ------------------- ADMIN -------------------
 urlpatterns += [
     path('admin-dashboard', views.admin_dashboard_view, name='admin-dashboard'),
-
     path('admin-doctor', views.admin_doctor_view, name='admin-doctor'),
     path('admin-view-doctor', views.admin_view_doctor_view, name='admin-view-doctor'),
     path('delete-doctor-from-hospital/<int:pk>', views.delete_doctor_from_hospital_view, name='delete-doctor-from-hospital'),
@@ -52,7 +52,6 @@ urlpatterns += [
     path('reject-patient/<int:pk>', views.reject_patient_view, name='reject-patient'),
     path('admin-discharge-patient', views.admin_discharge_patient_view, name='admin-discharge-patient'),
     path('discharge-patient/<int:pk>', views.discharge_patient_view, name='discharge-patient'),
-    path('download-pdf/<int:pk>', views.download_pdf_view, name='download-pdf'),
 
     path('admin-appointment', views.admin_appointment_view, name='admin-appointment'),
     path('admin-view-appointment', views.admin_view_appointment_view, name='admin-view-appointment'),
@@ -65,11 +64,9 @@ urlpatterns += [
 # ------------------- DOCTOR -------------------
 urlpatterns += [
     path('doctor-dashboard', views.doctor_dashboard_view, name='doctor-dashboard'),
-
     path('doctor-patient', views.doctor_patient_view, name='doctor-patient'),
     path('doctor-view-patient', views.doctor_view_patient_view, name='doctor-view-patient'),
     path('doctor-view-discharge-patient', views.doctor_view_discharge_patient_view, name='doctor-view-discharge-patient'),
-
     path('doctor-appointment', views.doctor_appointment_view, name='doctor-appointment'),
     path('doctor-view-appointment', views.doctor_view_appointment_view, name='doctor-view-appointment'),
     path('doctor-delete-appointment', views.doctor_delete_appointment_view, name='doctor-delete-appointment'),
@@ -85,3 +82,6 @@ urlpatterns += [
     path('patient-discharge', views.patient_discharge_view, name='patient-discharge'),
 ]
 
+# ------------------- MEDIA EN DESARROLLO -------------------
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
