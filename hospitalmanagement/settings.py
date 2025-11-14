@@ -12,8 +12,10 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Seguridad y depuración
 # -----------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'clave_segura_por_defecto')
-DEBUG = True  # temporal para Render Free
-ALLOWED_HOSTS = ['*']  # acepta cualquier host temporalmente
+DEBUG = True  # Render Free requiere DEBUG=True para servir archivos y evitar 400
+
+# ALLOWED_HOSTS amplio para Render Free
+ALLOWED_HOSTS = ['*']
 
 # -----------------------
 # Apps y Middleware
@@ -31,6 +33,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Para servir static en producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,6 +60,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',  # Para MEDIA_URL
             ],
         },
     },
@@ -70,10 +74,10 @@ WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
+        'NAME': os.environ.get('DB_NAME', 'hospital_ykn0'),
+        'USER': os.environ.get('DB_USER', 'admin'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
@@ -107,6 +111,9 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# Whitenoise para servir archivos estáticos en Render Free
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # -----------------------
 # Login / Logout
 # -----------------------
@@ -114,7 +121,7 @@ LOGIN_REDIRECT_URL = '/afterlogin'
 LOGOUT_REDIRECT_URL = '/'
 
 # -----------------------
-# Email
+# Email (opcional)
 # -----------------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
@@ -124,8 +131,10 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # -----------------------
-# Servir media en desarrollo
+# Servir media en desarrollo / Render Free
 # -----------------------
 if DEBUG:
     from django.conf.urls.static import static
+    from django.urls import path
     urlpatterns = static(MEDIA_URL, document_root=MEDIA_ROOT)
+
