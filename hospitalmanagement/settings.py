@@ -1,9 +1,10 @@
 """
 Django settings for hospitalmanagement project.
-Generado por 'django-admin startproject' usando Django 3.0.5.
+Adaptado para despliegue en Render (PostgreSQL) con fallback local.
 """
 
 import os
+import dj_database_url
 
 # ---------------------------------------------------
 # BASE PATHS
@@ -15,9 +16,18 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # ---------------------------------------------------
 # SECURITY
 # ---------------------------------------------------
-SECRET_KEY = 'hpbv()ep00boce&o0w7z1h)st148(*m@6@-rk$nn)(n9ojj4c0'
-DEBUG = True
-ALLOWED_HOSTS = []
+# Lee SECRET_KEY desde variable de entorno (no subir la real al repo)
+SECRET_KEY = os.environ.get('SECRET_KEY', 'reemplazar_con_una_clave_secreta_local')
+
+# DEBUG desde variable de entorno (en Render pondrás False)
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+
+# ALLOWED_HOSTS desde variable (separa por comas en Render)
+allowed = os.environ.get('ALLOWED_HOSTS', '')
+if allowed:
+    ALLOWED_HOSTS = [h.strip() for h in allowed.split(',')]
+else:
+    ALLOWED_HOSTS = []  # en local, localhost está bien
 
 # ---------------------------------------------------
 # APPLICATIONS
@@ -71,20 +81,28 @@ TEMPLATES = [
 WSGI_APPLICATION = 'hospitalmanagement.wsgi.application'
 
 # ---------------------------------------------------
-# DATABASE (SQL SERVER)
+# DATABASE (PostgreSQL en Render / fallback SQLite local)
 # ---------------------------------------------------
-DATABASES = {
-    'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'HospitalDB',
-        'HOST': r'ELIOTOBAR\SQLEXPRESS02',
-        'PORT': '',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'trusted_connection': 'yes',
-        },
+# Render va a proporcionar DATABASE_URL en formato:
+# postgresql://USER:PASSWORD@HOST:PORT/DATABASE
+DATABASE_URL = os.environ.get('DATABASE_URL', '')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-}
+else:
+    # Fallback local: sqlite (útil para probar localmente sin Postgres)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # ---------------------------------------------------
 # PASSWORD VALIDATION
@@ -113,8 +131,13 @@ LOCALE_PATHS = [
 # STATIC & MEDIA FILES
 # ---------------------------------------------------
 STATIC_URL = '/static/'
+# Carpeta donde collectstatic dejará los archivos (útil en Render)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [STATIC_DIR]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Media (archivos subidos) - en producción deberías usar S3 u otro servicio
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # ---------------------------------------------------
 # LOGIN / LOGOUT CONFIG
@@ -129,9 +152,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'from@gmail.com'
-EMAIL_HOST_PASSWORD = 'xyz'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'from@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'xyz')
 EMAIL_RECEIVING_USER = ['to@gmail.com']
+
+# ---------------------------------------------------
+# OTRAS CONFIGS
+# ---------------------------------------------------
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
 
